@@ -4,14 +4,15 @@
       <h1>数据导入</h1>
     </el-row>
     <el-row type="flex" class="port-operation">
-      <form
-        action="http://39.100.12.28:8080/dianyeAutho/readExcelServlet"
-        method="post"
-        enctype="multipart/form-data"
+      <el-upload
+        class="uploadfile"
+        action=""
+        :http-request="uploadFileMethod"
+        :show-file-list="true"
+        multiple
       >
-        <input type="file" name="upload" />
-        <input type="button" value="上传文件" />
-      </form>
+        <el-button class="custom-btn" type="success">上传</el-button>
+      </el-upload>
     </el-row>
     <el-row>
       <el-table :data="files" style="width: 100%;" border>
@@ -25,7 +26,9 @@
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column prop="upTime" label="日期" show-overflow-tooltip>
-          <template slot-scope="scope">{{ scope.row.upTime | filterDate }}</template>
+          <template slot-scope="scope">{{
+            scope.row.upTime | filterDate
+          }}</template>
         </el-table-column>
       </el-table>
     </el-row>
@@ -33,6 +36,7 @@
 </template>
 <script>
 import requestPort from "../../../api/port.js";
+import { fileUpload } from "../../../api/fileUpload.js";
 export default {
   name: "port",
   data() {
@@ -56,6 +60,20 @@ export default {
         }
         this.files = file;
       });
+    },
+    uploadFileMethod(param) {
+      let fileObject = param.file;
+      console.log("test",fileObject);
+      fileUpload(fileObject)
+        .then((data) => {
+          if (data) {
+            this.getAllFiles();
+            alert("上传成功");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
 };
