@@ -1,8 +1,12 @@
 <template>
-  <div class="pie-chart" v-bind:style="{height:clientHeight}">
+  <div class="pie-chart" v-bind:style="{ height: clientHeight }">
     <div class="index-menu">
       <span class="menu-name">指标：</span>
-      <el-cascader v-model="checkedVal" :options="allIndexs" size="small"></el-cascader>
+      <el-cascader
+        v-model="checkedVal"
+        :options="allIndexs"
+        size="small"
+      ></el-cascader>
     </div>
     <div id="one-module-container"></div>
   </div>
@@ -11,7 +15,7 @@
 <script>
 import optionPublicFun from "../../../utils/optionPublic.js";
 import optionPieFun from "./optionPie.js";
-// import getFourModual from "../../../api/modules.js";
+import getFourModual from "../../../api/modules.js";
 import getOneModual from "../../../api/oneModule.js";
 import requestCommonData from "../../../api/common.js";
 import dataPublicFun from "../../../utils/dataPublic";
@@ -28,15 +32,29 @@ export default {
       allIndexs: [],
       allTimes: [],
       checkedVal: [],
-      indexs: []
+      indexs: [],
+      initTime: null,
     };
   },
   mounted() {
     this.setClient();
-    let m = parseInt(this.$route.params.module);
     let t = parseInt(this.$route.params.time);
-    this.checkedVal = [m, t];
-    this.getOneModuleInfo()
+      let m = parseInt(this.$route.params.module);
+    this.initTime = t;
+    this.checkedVal = [m,t];
+    /**
+     * APi请求队列
+     * */
+    let getApi = [
+      requestCommonData.getAllTimes(),
+      getFourModual({ timeid: this.initTime }),
+    ];
+    /**
+     * 响应数据处理队列
+     * */
+    let resApi = [this.requestAllTimes, this.requestFourModulesData];
+    //请求组件所需要数据
+    this.reqGetInfo(getApi, resApi);
   },
   methods: {
     setClient() {
@@ -45,9 +63,11 @@ export default {
         : document.body.clientHeight;
       this.clientHeight = clientHeight - 125 + "px";
     },
-    async getOneModuleInfo(){
+    async getTimeINfo() {
       let timeData = await requestCommonData.getAllTimes();
       this.requestAllTimes(timeData.data);
+      let indexData = await getFourModual({ timeid: this.initTime });
+      this.requestAllTimes(indexData.data);
     },
     reqGetInfo(getApi, resApi) {
       /**
@@ -55,7 +75,7 @@ export default {
        * */
       let result = Promise.all(getApi);
       result
-        .then(data => {
+        .then((data) => {
           for (let i = 0; i < data.length; i++) {
             if (data[i].code === 0) {
               resApi[i](data[i].data);
@@ -64,12 +84,25 @@ export default {
             }
           }
         })
-        .catch(error => {
+        .catch((error) => {
           throw error;
         });
     },
     requestOneModuleData(data) {
       this.oneModulePieCharts(data);
+    },
+    //请求所有指标
+    requestFourModulesData(data) {
+      for (let i = 0; i < data.ModuleValue.length; i++) {
+        this.indexs.push({
+          iid: data.ModuleValue[i].id,
+          indexName: data.ModuleValue[i].moduleName,
+        });
+      }
+      this.allIndexs = new dataPublicFun(this.indexs).getAllIndexs(
+        "pie",
+        this.allTimes
+      );
     },
     // 请求所有季度
     requestAllTimes(data) {
@@ -82,20 +115,19 @@ export default {
         color: colors,
         tooltip: opPieFnc.firstPieTooltip("bold", 14, "second"),
         legend: opPieFnc.firstPieLegend("bold", 14, "13%"),
-        series: opPieFnc.firstPieSeries("second")
+        series: opPieFnc.firstPieSeries("second"),
       });
-    }
+    },
   },
   watch: {
     checkedVal: {
       handler: function(val) {
-        console.log("object one ");
         let getApi = [getOneModual({ timeid: val[1], moduleid: val[0] })];
         let resApi = [this.requestOneModuleData];
         this.reqGetInfo(getApi, resApi);
-      }
-    }
-  }
+      },
+    },
+  },
 };
 </script>
 

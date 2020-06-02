@@ -5,7 +5,7 @@ import axios from '../control/filter/http.js'
  */
 let getOneModule = async function (body) {
   return new Promise((resolve, reject) => {
-    axios.post('/dianyeAutho/rest/JsonData/OneModual', body)
+    axios.post('/api/dianyeAutho/rest/JsonData/OneModual', body)
       .then(data => {
         if (data.status === 200) {
           //处理状态

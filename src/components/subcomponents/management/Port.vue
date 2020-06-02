@@ -36,7 +36,8 @@
 </template>
 <script>
 import requestPort from "../../../api/port.js";
-import { fileUpload } from "../../../api/fileUpload.js";
+import Http from "../../../http/http.js";
+// import { fileUpload } from "../../../api/fileUpload.js";
 export default {
   name: "port",
   data() {
@@ -63,15 +64,24 @@ export default {
     },
     uploadFileMethod(param) {
       let fileObject = param.file;
-      console.log("test",fileObject);
-      fileUpload(fileObject)
+      let formData = new FormData();
+      formData.append("upload", fileObject);
+      Http({
+        method: "post",
+        url: "/api/dianyeAutho/readExcelServlet",
+        headers: { "Content-Type": "multipart/form-data" },
+        data: formData,
+      })
         .then((data) => {
-          if (data) {
+          if (data.message == "Success") {
             this.getAllFiles();
-            alert("上传成功");
+            this.$message.success("上传成功");
+          } else {
+            this.$message.error("上传失败");
           }
         })
         .catch((err) => {
+          this.$message.error("上传失败");
           console.log(err);
         });
     },

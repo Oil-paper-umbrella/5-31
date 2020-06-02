@@ -1,8 +1,12 @@
 <template>
-  <div class="pie-chart" v-bind:style="{height:clientHeight}">
+  <div class="pie-chart" v-bind:style="{ height: clientHeight }">
     <div class="index-menu">
       <span class="menu-name">季度：</span>
-      <el-cascader v-model="checkedVal" :options="allTimes" size="small"></el-cascader>
+      <el-cascader
+        v-model="checkedVal"
+        :options="allTimes"
+        size="small"
+      ></el-cascader>
     </div>
     <div id="four-modules-container"></div>
   </div>
@@ -13,6 +17,7 @@ import optionPublicFun from "../../../utils/optionPublic.js";
 import optionPieFun from "./optionPie.js";
 import dataPublicFun from "../../../utils/dataPublic";
 import getFourModual from "../../../api/modules.js";
+import allModuals from "../../../api/allModuals.js";
 import requestCommonData from "../../../api/common.js";
 const colors = ["#FCD85A", "#0084C8", "#D8514B", "#9CCB63"];
 require("echarts/lib/chart/pie");
@@ -29,12 +34,11 @@ export default {
         // legend 样式
         weight: "bold",
         size: 14,
-        legendRight: "13%"
+        legendRight: "13%",
       },
       allTimes: [],
       checkedVal: [],
-      moduleid: [],
-      module: []
+      allModule: null,
     };
   },
   mounted() {
@@ -44,23 +48,33 @@ export default {
     } else if (nowPath == "/whole") {
       this.flag = true;
     }
-    this.getFourModualINfo()
+    this.getFourModualINfo();
   },
   methods: {
-    async getFourModualINfo(){
+    async getFourModualINfo() {
+      let that = this;
       let timeData = await requestCommonData.getAllTimes();
-      this.requestAllTimes(timeData.data)
+      this.requestAllTimes(timeData.data);
+      allModuals()
+        .then((data) => {
+          if (data.message === "Success") {
+            that.allModule = data.data.Allmodule;
+          } else {
+            throw new Error(data.message);
+          }
+        })
+        .catch((error) => {
+          throw error;
+        });
     },
     reqGetInfo(getApi, resApi) {
       /**
        * 异步请求数据
        * */
       let result = Promise.all(getApi);
-      console.log("object");
-      console.log('object :>> ', result);
       result
-        .then(data => {
-          resApi[0](data[0].data)
+        .then((data) => {
+          resApi[0](data[0].data);
           for (let i = 0; i < data.length; i++) {
             if (data[i].code === 0) {
               resApi[i](data[i].data);
@@ -69,7 +83,7 @@ export default {
             }
           }
         })
-        .catch(error => {
+        .catch((error) => {
           throw error;
         });
     },
@@ -78,8 +92,8 @@ export default {
      * @param timeid 季度
      */
     requestFourModualData(data) {
-       this.setLegendStyle(this.flag);
-       this.fourModulesPieCharts(data);
+      this.setLegendStyle(this.flag);
+      this.fourModulesPieCharts(data);
     },
     // 请求所有季度
     requestAllTimes(data) {
@@ -102,11 +116,9 @@ export default {
     },
     // pie 数据渲染
     fourModulesPieCharts(data) {
-      console.log("aa",data);
-      this.moduleid = data.AllModul.listModules.id;
-      this.module = data.AllModul.listModules.id;
       let pieObj = this.pieLgendStyle;
       let opPieFnc = new optionPieFun(data);
+      let that = this;
       this.myChart = new optionPublicFun().init("four-modules-container");
       this.myChart.setOption({
         tooltip: opPieFnc.firstPieTooltip(pieObj.weight, pieObj.size, "first"),
@@ -117,33 +129,29 @@ export default {
         ),
         color: colors,
         label: opPieFnc.pieLabel(this.pieLgendStyle.size),
-        series: opPieFnc.firstPieSeries("first")
+        series: opPieFnc.firstPieSeries("first"),
       });
       // 饼图 级联
-      this.myChart.on("click", params => {
-        let status = {
-          着力电网发展质量提升: "1",
-          着力公司管理效率提升: "2",
-          着力创新创效能力提升: "3",
-          基础保障力提升: "4"
-        };
+      this.myChart.on("click", (params) => {
         if (!this.flag) {
+          let moduleId = that.allModule[params.dataIndex].id
           this.$router.push({
-            path: "/whole/subpie/" + this.checkedVal + "/" + status[params.name]
+            path:
+              "/whole/subpie/" + this.checkedVal + "/" + moduleId,
           });
         }
       });
-    }
+    },
   },
   watch: {
     checkedVal: {
       handler: function(val) {
-         let getApi = [getFourModual({ timeid: val[0] })];
-         let resApi = [this.requestFourModualData];
-         this.reqGetInfo(getApi, resApi);
-      }
-    }
-  }
+        let getApi = [getFourModual({ timeid: val[0] })];
+        let resApi = [this.requestFourModualData];
+        this.reqGetInfo(getApi, resApi);
+      },
+    },
+  },
 };
 </script>
 

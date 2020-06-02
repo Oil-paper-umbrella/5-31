@@ -7,7 +7,7 @@ import axios from '../control/filter/http.js'
 let getFiles = async function () {
   return await axios
   .get(
-    "/dianyeAutho/rest/JsonData/allFiles"
+    "/api/dianyeAutho/rest/JsonData/allFiles"
   )
 }
 

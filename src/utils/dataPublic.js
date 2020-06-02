@@ -95,7 +95,7 @@ class dataPublicFun {
    * @namespace getAllTimes 获取所有的季度
    */
   getAllTimes() {
-    console.log("ss",this.data);
+    console.log("sjjjjjshss",this.data);
     let allTimes = [];
     let times = this.data.Alltime;
     if (times.length <= 0)

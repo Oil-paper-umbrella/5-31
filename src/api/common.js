@@ -4,7 +4,7 @@ import axios from '../control/filter/http.js'
  */
 let getAllIndexs = function () {
   return new Promise((resolve, reject)=>{
-    axios.get('/dianyeAutho/rest/JsonData/allIndexs')
+    axios.get('/api/dianyeAutho/rest/JsonData/allIndexs')
         .then(data=>{
           console.log("jj",data);
           if(data.status===200){
@@ -21,7 +21,7 @@ let getAllIndexs = function () {
  */
 let getAllTimes = async function () {
   return new Promise((resolve, reject)=>{
-    axios.get('/dianyeAutho/rest/JsonData/allTimes')
+    axios.get('/api/dianyeAutho/rest/JsonData/allTimes')
         .then(data=>{
           if(data.status===200){
             //处理状态

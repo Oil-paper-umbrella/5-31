@@ -8,7 +8,7 @@ import axios from '../control/filter/http.js'
 let getUser = async function () {
   return await axios
   .get(
-    "/dianyeAutho/rest/CrudServlet/getJsonAllUserAndRole"
+    "/api/dianyeAutho/rest/CrudServlet/getJsonAllUserAndRole"
   )
 }
 
@@ -19,7 +19,7 @@ let getUser = async function () {
 let addUser = async function (body) {
   return await axios
   .post(
-    "/dianyeAutho/rest/CrudServlet/addUser",body
+    "/api/dianyeAutho/rest/CrudServlet/addUser",body
   )
 }
 
@@ -30,7 +30,7 @@ let addUser = async function (body) {
 let delUser = async function (body) {
   return await axios
   .post(
-    "/dianyeAutho/rest/CrudServlet/delUserById",body
+    "/api/dianyeAutho/rest/CrudServlet/delUserById",body
   )
 }
 
@@ -41,7 +41,7 @@ let delUser = async function (body) {
 let updateUser = async function (body) {
   return await axios
   .post(
-    "/dianyeAutho/rest/CrudServlet/updateUser",body
+    "/api/dianyeAutho/rest/CrudServlet/updateUser",body
   )
 }
 
@@ -51,7 +51,7 @@ let updateUser = async function (body) {
 let getRole = async function () {
   return await axios
   .get(
-    "/dianyeAutho/rest/CrudServlet/getAllRoles"
+    "/api/dianyeAutho/rest/CrudServlet/getAllRoles"
   )
 }
 
@@ -62,7 +62,7 @@ let getRole = async function () {
 let addRolesToUser = async function (body) {
   return await axios
   .post(
-    "/dianyeAutho/rest/CrudServlet/setUserRoles",body
+    "/api/dianyeAutho/rest/CrudServlet/setUserRoles",body
   )
 }
 
@@ -73,7 +73,7 @@ let addRolesToUser = async function (body) {
 let updateRoleToUser = async function (body) {
   return await axios
   .post(
-    "/dianyeAutho/rest/CrudServlet/updateUserRoles",body
+    "/api/dianyeAutho/rest/CrudServlet/updateUserRoles",body
   )
 }
 
@@ -84,7 +84,7 @@ let updateRoleToUser = async function (body) {
 let findUserRoleInfo = async function (body) {
   return await axios
   .post(
-    "/dianyeAutho/rest/CrudServlet/getJSonOneUserAndRole?token",body
+    "/api/dianyeAutho/rest/CrudServlet/getJSonOneUserAndRole?token",body
   )
 }
 

@@ -39,27 +39,13 @@ export default {
       flag: false,
       list: [
         { id: 1, icon: "U", name: "账号", model: "", className: "", bg: "" },
-        { id: 2, icon: "P", name: "密码", model: "", className: "", bg: "" }
-      ]
+        { id: 2, icon: "P", name: "密码", model: "", className: "", bg: "" },
+      ],
     };
   },
   created() {
     this.clearActive();
   },
-  // mounted: function() {
-  //   var login = document.getElementsByClassName("login")[0];
-  //   login.style.top =
-  //     document.documentElement.scrollTop +
-  //     (document.documentElement.clientHeight - login.offsetHeight) / 2 +
-  //     "px";
-  //   login.style.left =
-  //     document.documentElement.scrollLeft +
-  //     (document.documentElement.clientWidth - login.offsetWidth) / 2 +
-  //     "px";
-  //   var loginBox = document.getElementsByClassName("loginBox")[0];
-  //   loginBox.style.top = login.style.top;
-  //   loginBox.style.left = login.style.left;
-  // },
   methods: {
     clearActive() {
       for (var i = 0; i < this.list.length; i++) {
@@ -68,7 +54,7 @@ export default {
       }
     },
     inputActive: function(id) {
-      var index = this.list.findIndex(item => {
+      var index = this.list.findIndex((item) => {
         if (item.id == id) {
           return true;
         }
@@ -78,9 +64,8 @@ export default {
       this.list[index].bg = "bg active";
     },
     login: function() {
-      console.log(this);
       this.axios
-        .post("/dianyeAutho/servlet/login", {
+        .post("/api/dianyeAutho/servlet/login", {
           userName: "admin",
           password: "admin"
         })
@@ -93,8 +78,8 @@ export default {
             alert("fail");
           }
         });
-    }
-  }
+    },
+  },
 };
 </script>
 

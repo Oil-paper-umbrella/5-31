@@ -152,24 +152,6 @@ export default {
       this.flag = true;
     }
     this.getBarInfo();
-    /**
-     * APi请求队列
-     * */
-    /* let getApi = [
-      requestCommonData.getAllTimes(),
-      requestCommonData.getAllIndexs(),
-      this.getBarInfo()
-    ]; */
-    /**
-     * 响应数据处理队列
-     * */
-    /* let resApi = [
-      this.resuestAllTimes,
-      this.resuestAllIndexs,
-      this.resuestBarChartData
-    ]; */
-    //请求组件所需要数据
-    // this.reqGetInfo(getApi, resApi);
   },
   methods: {
     // 请求所有季度跟指标,默认初始渲染第一个季度跟第一个指标
@@ -186,12 +168,10 @@ export default {
     },
     // 请求所有指标
     resuestAllIndexs(data) {
-      console.log("kk");
       this.allIndexs = new dataPublicFun(data).getAllIndexs(
         "bar",
         this.allTimes
       );
-      console.log("index",this.allIndexs);
       this.indicator[0].children = this.allIndexs;
     },
     // 请求所有季度
@@ -215,11 +195,8 @@ export default {
       let result = Promise.all(getApi);
       result
         .then((data) => {
-      console.log('object :>> ', data[0].code === 0);
           for (let i = 0; i < data.length; i++) {
             if (data[i].code === 0) {
-              console.log(resApi[i]);
-              console.log('object :>> ', data[i].data);
               resApi[i](data[i].data);
             } else {
               throw new Error(data[i].message);
@@ -234,7 +211,6 @@ export default {
      * @namespace requestBarChartData 向后台发起请求
      */
     resuestBarChartData(data) {
-      console.log("reqbar",data.cityScore.length);
       if (data.cityScore.length <= 0) {
         this.$message.error("请求数据为空");
       } else {

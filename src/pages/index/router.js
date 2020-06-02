@@ -62,7 +62,7 @@ let routes = [
       },
       {
         path: '/port',
-        name: '数据导入、导出',
+        name: '数据导入',
         component: Port
       },
       {

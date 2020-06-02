@@ -51,7 +51,6 @@ class dataPieFun {
    * @param {二级饼图json数据} data 
    */
   subIndexScoreOfModule(data) {
-    console.log("pie",data);
     let indexScore = [];
     let subIndexData = data.IndexValue; // 所有指标
     if (subIndexData.length <= 0)
@@ -67,16 +66,12 @@ class dataPieFun {
     return indexScore;
   }
   setModualStatus(name,id){
-    console.log(name);
-    console.log(id);
-    console.log("okkk");
     let status = {};
     for(let i=0;i<name.length;i++){
       let moduleid = id[i];
       let module = name[i];
       status.push(module,moduleid)
     }
-    console.log('object :>> ', status);
   }
 }
 

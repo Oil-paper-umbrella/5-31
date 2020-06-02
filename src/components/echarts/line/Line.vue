@@ -87,25 +87,11 @@ export default {
       this.flag = true;
     }
     this.getLineInfo()
-    /**
-     * APi请求队列
-     * */
-    // let getApi = [
-    //   requestCommonData.getAllIndexs(),
-    //   this.getLineInfo(),
-    // ];
-    /**
-     * 响应数据处理队列
-     * */
-    // let resApi = [this.requestAllIndexs, this.requestLineChartData];
-    //请求组件所需要数据
-    // this.reqGetInfo(getApi, resApi);
   },
   methods: {
     async getLineInfo(){
       let indexData = await requestCommonData.getAllIndexs();
       this.requestAllIndexs(indexData.data)
-      console.log("lines",indexData);
       this.checkedVal = [indexData.data.Allindexs[1].iid];
     },
     reqGetInfo(getApi, resApi) {
@@ -113,8 +99,6 @@ export default {
        * 异步请求数据
        * */
       let result = Promise.all(getApi);
-          console.log("line data");
-          console.log(result);
       result
         .then(data => {
           for (let i = 0; i < data.length; i++) {
@@ -203,7 +187,6 @@ export default {
   watch: {
     checkedVal: {
       handler: function(val) {
-        console.log("ok");
         let getApi = [getLineChart({ indexid: val[0] })];
         let resApi = [this.requestLineChartData];
         this.reqGetInfo(getApi, resApi);

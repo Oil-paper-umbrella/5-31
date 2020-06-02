@@ -1,12 +1,11 @@
 import axios from '../control/filter/http.js'
-
 /**
- * @namespace getBarChart
- * @param {获取柱状图的指标参数和时间参数} body {timeid: 13, indexid: 106}
+ * @namespace getFourModules 向后台请求四大模块数据
+ * @param {获取四大模块的时间参数} body {timeid: 13}
  */
-let getBarChart =  function (body) {
+let getAllModules = function () {
   return new Promise((resolve, reject)=>{
-    axios.post('/api/dianyeAutho/rest/JsonData/barChart', body)
+    axios.get('/api/dianyeAutho/rest/JsonData/allModuals')
         .then(data=>{
           if(data.status===200){
             //处理状态
@@ -17,4 +16,4 @@ let getBarChart =  function (body) {
         })
   })
 }
-export default getBarChart;
+export default getAllModules;

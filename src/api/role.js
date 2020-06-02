@@ -8,7 +8,7 @@ import axios from '../control/filter/http.js'
 let getAllRole = async function () {
   return await axios
   .get(
-    "/dianyeAutho/rest/CrudServlet/getJsonAllRoleAndAut"
+    "/api/dianyeAutho/rest/CrudServlet/getJsonAllRoleAndAut"
   )
 }
 
@@ -18,7 +18,7 @@ let getAllRole = async function () {
 let getAllPower = async function () {
   return await axios
   .get(
-    "/dianyeAutho/rest/CrudServlet/getAllAuthoritys"
+    "/api/dianyeAutho/rest/CrudServlet/getAllAuthoritys"
   )
 }
 
@@ -29,7 +29,7 @@ let getAllPower = async function () {
 let addRole = async function (body) {
   return await axios
   .post(
-    "/dianyeAutho/rest/CrudServlet/addRole",body
+    "/api/dianyeAutho/rest/CrudServlet/addRole",body
   )
 }
 
@@ -40,7 +40,7 @@ let addRole = async function (body) {
 let updateRole = async function (body) {
   return await axios
   .post(
-    "/dianyeAutho/rest/CrudServlet/updateRole",body
+    "/api/dianyeAutho/rest/CrudServlet/updateRole",body
   )
 }
 
@@ -51,7 +51,7 @@ let updateRole = async function (body) {
 let getRoleOfPower = async function (body) {
   return await axios
   .post(
-    "/dianyeAutho/rest/CrudServlet/getOneRoleAndAut",body
+    "/api/dianyeAutho/rest/CrudServlet/getOneRoleAndAut",body
   )
 }
 
@@ -62,7 +62,7 @@ let getRoleOfPower = async function (body) {
 let setPower = async function (body) {
   return await axios
   .post(
-    "/dianyeAutho/rest/CrudServlet/setRoleAuthos",body
+    "/api/dianyeAutho/rest/CrudServlet/setRoleAuthos",body
   )
 }
 
@@ -73,7 +73,7 @@ let setPower = async function (body) {
 let updateRoleOfPrower = async function (body) {
   return await axios
   .post(
-    "/dianyeAutho/rest/CrudServlet/updateRoleAuthos",body
+    "/api/dianyeAutho/rest/CrudServlet/updateRoleAuthos",body
   )
 }
 
@@ -84,7 +84,7 @@ let updateRoleOfPrower = async function (body) {
 let delRole = async function (body) {
   return await axios
   .post(
-    "/dianyeAutho/rest/CrudServlet/delRoleById",body
+    "/api/dianyeAutho/rest/CrudServlet/delRoleById",body
   )
 }
 
